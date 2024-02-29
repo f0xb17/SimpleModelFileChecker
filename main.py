@@ -53,12 +53,12 @@ def main():
                     ####
                     fileExists(PureWindowsPath(line))
             print("---------------------------------------------------")
-            print('The following .o3d file could be found:')
+            print('The following .o3d file(s) could be found:')
             print("---------------------------------------------------")
             for existingFile in existingFiles:
                 print(existingFile)
             print("---------------------------------------------------")
-            print('The following .o3d files could not be found:')
+            print('The following .o3d file(s) could not be found:')
             print("---------------------------------------------------")
             for noneExistingFile in noneExistingFiles:
                 print(noneExistingFile)
