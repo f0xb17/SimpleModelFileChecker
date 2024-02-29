@@ -1,7 +1,6 @@
 from platform import system
 from pathlib import PureWindowsPath, PurePosixPath
 
-
 def readModelFile(filePath):
     ###
     # Attempts to read in a .cfg file. 
@@ -21,11 +20,11 @@ def readModelFile(filePath):
 
 
 def main():
-    lines = readModelFile('S416LE_1-1-0.cfg')
+    file = readModelFile('S416LE_1-1-0.cfg')
     try:
-        if lines:
+        if file:
             print('The following .o3d files were found:')
-            for line in lines:
+            for line in file:
                 ####
                 # The path read in is converted from a Windows path to a POSIX path. 
                 # This is necessary because only the Windows convention is ever used in a model file.
