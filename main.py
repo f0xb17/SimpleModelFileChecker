@@ -2,6 +2,10 @@ from platform import system
 from pathlib import PureWindowsPath, PurePosixPath
 from os import path
 
+
+existingFiles = []
+noneExistingFiles = []
+
 def readModelFile(filePath):
     ###
     # Attempts to read in a .cfg file. 
@@ -24,24 +28,40 @@ def fileExists(filePath):
     # Checks whether the specified file exists within the file path or not.
     ####
     if path.exists(filePath):
-        print(f"'{filePath}' exists!")
+        existingFiles.append(filePath)
     else:
-        print(f"'{filePath}' does not exist!")
+        noneExistingFiles.append(filePath)
 
 def main():
     file = readModelFile('S416LE_1-1-0.cfg')
     try:
         if file:
-            print('The following .o3d files were found:')
             for line in file:
                 ####
                 # The path read in is converted from a Windows path to a POSIX path. 
                 # This is necessary because only the Windows convention is ever used in a model file.
                 ####
                 if system() == "Linux" or system() == "Darwin":
+                    ####
+                    # Converts a Windows file path to a POSIX file path, if user is using Linux or macOS. 
+                    ####
                     fileExists(PurePosixPath(*PureWindowsPath(line).parts))
                 else:
+                    ####
+                    # Or simply use the normal Windows file path, if user is using Windows or any other OS. 
+                    # Philosophical question: Is there anything other than Windows file paths or POSIX file paths?
+                    ####
                     fileExists(PureWindowsPath(line))
+            print("---------------------------------------------------")
+            print('The following .o3d file could be found:')
+            print("---------------------------------------------------")
+            for existingFile in existingFiles:
+                print(existingFile)
+            print("---------------------------------------------------")
+            print('The following .o3d files could not be found:')
+            print("---------------------------------------------------")
+            for noneExistingFile in noneExistingFiles:
+                print(noneExistingFile)
         else:
             raise IOError
     except IOError as err:
