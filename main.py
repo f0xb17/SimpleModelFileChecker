@@ -1,5 +1,6 @@
 from platform import system
 from pathlib import PureWindowsPath, PurePosixPath
+from os import path
 
 def readModelFile(filePath):
     ###
@@ -18,6 +19,14 @@ def readModelFile(filePath):
         print(f"Error: Current path '{filePath}' is a Directory? ", err)
     return lines
 
+def fileExists(filePath):
+    ####
+    # Checks whether the specified file exists within the file path or not.
+    ####
+    if path.exists(filePath):
+        print(f"'{filePath}' exists!")
+    else:
+        print(f"'{filePath}' does not exist!")
 
 def main():
     file = readModelFile('S416LE_1-1-0.cfg')
@@ -30,9 +39,9 @@ def main():
                 # This is necessary because only the Windows convention is ever used in a model file.
                 ####
                 if system() == "Linux" or system() == "Darwin":
-                    print(PurePosixPath(*PureWindowsPath(line).parts))
+                    fileExists(PurePosixPath(*PureWindowsPath(line).parts))
                 else:
-                    print(PureWindowsPath(line))
+                    fileExists(PureWindowsPath(line))
         else:
             raise IOError
     except IOError as err:
