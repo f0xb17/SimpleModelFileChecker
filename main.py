@@ -3,9 +3,10 @@ from pathlib import PureWindowsPath, PurePosixPath
 
 
 def readModelFile(filePath):
-    """
-    Attempts to read in a .cfg file. The aim is to find every line that contains an .o3d at the end.
-    """
+    ###
+    # Attempts to read in a .cfg file. 
+    # The aim is to find every line that contains an .o3d at the end.
+    ###
     lines = []
     try:
         with open(filePath, 'r') as configFile:
@@ -25,6 +26,10 @@ def main():
         if lines:
             print('The following .o3d files were found:')
             for line in lines:
+                ####
+                # The path read in is converted from a Windows path to a POSIX path. 
+                # This is necessary because only the Windows convention is ever used in a model file.
+                ####
                 if system() == "Linux" or system() == "Darwin":
                     print(PurePosixPath(*PureWindowsPath(line).parts))
                 else:
