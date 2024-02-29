@@ -1,3 +1,7 @@
+from platform import system
+from pathlib import PureWindowsPath, PurePosixPath
+
+
 def readModelFile(filePath):
     """
     Attempts to read in a .cfg file. The aim is to find every line that contains an .o3d at the end.
@@ -16,12 +20,15 @@ def readModelFile(filePath):
 
 
 def main():
-    lines = readModelFile('S416LE_1-2-0.cfg')
+    lines = readModelFile('S416LE_1-1-0.cfg')
     try:
         if lines:
             print('The following .o3d files were found:')
             for line in lines:
-                print(line)
+                if system() == "Linux" or system() == "Darwin":
+                    print(PurePosixPath(*PureWindowsPath(line).parts))
+                else:
+                    print(PureWindowsPath(line))
         else:
             raise IOError
     except IOError as err:
